@@ -1,0 +1,144 @@
+//================================================================================
+//  AVImageView.swift
+//  Author: Xujie Song
+//  Copyright (c) 2015 SK8 PTY LTD. All rights reserved.
+//================================================================================
+
+import UIKit
+
+public class AVImageView: UIImageView {
+    
+    @IBInspectable public var MINIMUM_WIDTH: CGFloat = 160;
+    @IBInspectable public var MINIMUM_Height: CGFloat = 160;
+    
+    public dynamic var file: AVFile?;
+    private var cachedfile: AVFile?;
+    private var scale: CGFloat = UIScreen.mainScreen().scale;
+    
+    public func loadInBackground() {
+        
+        if (self.cachedfile?.objectId == self.file?.objectId && self.image != nil) {
+            //Image already loaded, do nothing
+            return;
+        } else {
+            self.cachedfile = self.file;
+        }
+        
+        if let imageFile = self.file {
+            var width = self.frame.width;
+            if (width < MINIMUM_WIDTH) {
+                width = MINIMUM_WIDTH;
+            }
+            var height = self.frame.height;
+            if (height < MINIMUM_Height) {
+                height = MINIMUM_Height;
+            }
+            if (!imageFile.isDirty) {
+                if let data = imageFile.getData() {
+                    var image = UIImage(data: data);
+                    self.image = image;
+                } else {
+                    SHLog.e("Failed to load becuase image file had not uploaded and its data is nil");
+                }
+            } else {
+                imageFile.getThumbnail(false, width: Int32(width * self.scale), height: Int32(height * self.scale), withBlock: { (image, error) -> Void in
+                    if let e = error {
+                        SHLog.e(e);
+                    } else {
+                        self.image = image;
+                    }
+                })
+            }
+        } else {
+            var error = NSError(domain: "http://www.shelf.is", code: 400, userInfo: [NSLocalizedDescriptionKey: "Error loading image: file hadn't been set."]);
+            SHLog.e(error);
+        }
+    }
+    
+    public func loadInBackground(scaleToFit: Bool) {
+        
+        if (self.cachedfile?.objectId == self.file?.objectId && self.image != nil) {
+            //Image already loaded, do nothing
+            return;
+        } else {
+            self.cachedfile = self.file;
+        }
+        
+        if let imageFile = self.file {
+            var width = self.frame.width;
+            if (width < MINIMUM_WIDTH) {
+                width = MINIMUM_WIDTH;
+            }
+            var height = self.frame.height;
+            if (height < MINIMUM_Height) {
+                height = MINIMUM_Height;
+            }
+            if (!imageFile.isDirty) {
+                if let data = imageFile.getData() {
+                    var image = UIImage(data: data);
+                    self.image = image;
+                } else {
+                    SHLog.e("Failed to load becuase image file had not uploaded and its data is nil");
+                }
+            } else {
+                imageFile.getThumbnail(scaleToFit, width: Int32(width * self.scale), height: Int32(height * self.scale), withBlock: { (image, error) -> Void in
+                    if let e = error {
+                        SHLog.e(e);
+                    } else {
+                        self.image = image;
+                    }
+                })
+            }
+        } else {
+            var error = NSError(domain: "http://www.shelf.is", code: 400, userInfo: [NSLocalizedDescriptionKey: "Error loading image: file hadn't been set."]);
+            SHLog.e(error);
+        }
+    }
+    
+    public func loadInBackgroundWithBlock(block: AVDataResultBlock!) {
+        
+        if (self.cachedfile?.objectId == self.file?.objectId && self.image != nil) {
+            //Image already loaded, do nothing
+            return;
+        } else {
+            self.cachedfile = self.file;
+        }
+        
+        if let imageFile = self.file {
+            var width = self.frame.width;
+            if (width < MINIMUM_WIDTH) {
+                width = MINIMUM_WIDTH;
+            }
+            var height = self.frame.height;
+            if (height < MINIMUM_Height) {
+                height = MINIMUM_Height;
+            }
+            if (!imageFile.isDirty) {
+                if let data = imageFile.getData() {
+                    var image = UIImage(data: data);
+                    self.image = image;
+                } else {
+                    SHLog.e("Failed to load becuase image file had not uploaded and its data is nil");
+                }
+            } else {
+                imageFile.getThumbnail(false, width: Int32(width * self.scale), height: Int32(height * self.scale), withBlock: { (downloadedImage, error) -> Void in
+                    if let e = error {
+                        block(nil, error);
+                        SHLog.e(e);
+                    } else {
+                        self.image = downloadedImage;
+                        var data = UIImagePNGRepresentation(downloadedImage);
+                        var query: AVFile?
+                        block(data, nil);
+                    }
+                })
+            }
+        } else {
+            var error = NSError(domain: "http://www.shelf.is", code: 400, userInfo: [NSLocalizedDescriptionKey: "Error loading image: file hadn't been set."]);
+            SHLog.e(error);
+        }
+    }
+    
+    
+}
+
