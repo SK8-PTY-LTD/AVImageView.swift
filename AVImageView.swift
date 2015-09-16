@@ -12,16 +12,16 @@ public class AVImageView: UIImageView {
     @IBInspectable public var MINIMUM_Height: CGFloat = 160;
     
     public dynamic var file: AVFile?;
-    private var cachedfile: AVFile?;
+    private var cachedFile: AVFile?;
     private var scale: CGFloat = UIScreen.mainScreen().scale;
     
     public func loadInBackground() {
         
-        if (self.cachedfile?.objectId == self.file?.objectId && self.image != nil) {
+        if (self.cachedFile?.objectId == self.file?.objectId && self.image != nil) {
             //Image already loaded, do nothing
             return;
         } else {
-            self.cachedfile = self.file;
+            self.cachedFile = self.file;
         }
         
         if let imageFile = self.file {
@@ -57,11 +57,11 @@ public class AVImageView: UIImageView {
     
     public func loadInBackground(scaleToFit: Bool) {
         
-        if (self.cachedfile?.objectId == self.file?.objectId && self.image != nil) {
+        if (self.cachedFile?.objectId == self.file?.objectId && self.image != nil) {
             //Image already loaded, do nothing
             return;
         } else {
-            self.cachedfile = self.file;
+            self.cachedFile = self.file;
         }
         
         if let imageFile = self.file {
@@ -97,11 +97,11 @@ public class AVImageView: UIImageView {
     
     public func loadInBackgroundWithBlock(block: AVDataResultBlock!) {
         
-        if (self.cachedfile?.objectId == self.file?.objectId && self.image != nil) {
+        if (self.cachedFile?.objectId == self.file?.objectId && self.image != nil) {
             //Image already loaded, do nothing
             return;
         } else {
-            self.cachedfile = self.file;
+            self.cachedFile = self.file;
         }
         
         if let imageFile = self.file {
