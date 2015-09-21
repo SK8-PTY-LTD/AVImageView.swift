@@ -35,7 +35,7 @@ public class AVImageView: UIImageView {
             }
             if (!imageFile.isDirty) {
                 if let data = imageFile.getData() {
-                    var image = UIImage(data: data);
+                    let image = UIImage(data: data);
                     self.image = image;
                 } else {
                     SHLog.e("Failed to load becuase image file had not uploaded and its data is nil");
@@ -50,7 +50,7 @@ public class AVImageView: UIImageView {
                 })
             }
         } else {
-            var error = NSError(domain: "http://www.shelf.is", code: 400, userInfo: [NSLocalizedDescriptionKey: "Error loading image: file hadn't been set."]);
+            let error = NSError(domain: "http://www.shelf.is", code: 400, userInfo: [NSLocalizedDescriptionKey: "Error loading image: file hadn't been set."]);
             SHLog.e(error);
         }
     }
@@ -75,7 +75,7 @@ public class AVImageView: UIImageView {
             }
             if (!imageFile.isDirty) {
                 if let data = imageFile.getData() {
-                    var image = UIImage(data: data);
+                    let image = UIImage(data: data);
                     self.image = image;
                 } else {
                     SHLog.e("Failed to load becuase image file had not uploaded and its data is nil");
@@ -90,7 +90,7 @@ public class AVImageView: UIImageView {
                 })
             }
         } else {
-            var error = NSError(domain: "http://www.shelf.is", code: 400, userInfo: [NSLocalizedDescriptionKey: "Error loading image: file hadn't been set."]);
+            let error = NSError(domain: "http://www.shelf.is", code: 400, userInfo: [NSLocalizedDescriptionKey: "Error loading image: file hadn't been set."]);
             SHLog.e(error);
         }
     }
@@ -115,7 +115,7 @@ public class AVImageView: UIImageView {
             }
             if (!imageFile.isDirty) {
                 if let data = imageFile.getData() {
-                    var image = UIImage(data: data);
+                    let image = UIImage(data: data);
                     self.image = image;
                 } else {
                     SHLog.e("Failed to load becuase image file had not uploaded and its data is nil");
@@ -127,14 +127,13 @@ public class AVImageView: UIImageView {
                         SHLog.e(e);
                     } else {
                         self.image = downloadedImage;
-                        var data = UIImagePNGRepresentation(downloadedImage);
-                        var query: AVFile?
+                        let data = UIImagePNGRepresentation(downloadedImage);
                         block(data, nil);
                     }
                 })
             }
         } else {
-            var error = NSError(domain: "http://www.shelf.is", code: 400, userInfo: [NSLocalizedDescriptionKey: "Error loading image: file hadn't been set."]);
+            let error = NSError(domain: "http://www.shelf.is", code: 400, userInfo: [NSLocalizedDescriptionKey: "Error loading image: file hadn't been set."]);
             SHLog.e(error);
         }
     }
